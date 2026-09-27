@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naipes Font Tier List</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Aleo:ital,wght@0,100..900;1,100..900&family=Arbutus+Slab&family=Besley:ital,wght@0,400..900;1,400..900&family=Domine:wght@400..700&family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Gowun+Batang&family=Grandiflora+One&family=Jersey+15&family=Judson:ital,wght@0,400;0,700;1,400&family=Karma:wght@300;400;500;600;700&family=New+Tegomin&family=Noticia+Text:ital,wght@0,400;0,700;1,400;1,700&family=Oldenburg&family=Pangolin&family=Pridi:wght@200;300;400;500;600;700&family=Roboto+Slab:wght@100..900&family=Solway:wght@300;400;500;700;800&family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Uchen&family=Unkempt:wght@400;700&family=Vesper+Libre:wght@400;500;700;900&display=swap');
+
+    :root {
+      --bg: #111418;
+      --surface: #1a1f26;
+      --border: #2c3540;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #e5a93c;
+      
+      --tier-s: rgba(6, 214, 160, 0.22);
+      --tier-s-border: #06d6a0;
+      --tier-a: rgba(17, 138, 178, 0.26);
+      --tier-a-border: #118ab2;
+      --tier-b: rgba(255, 209, 102, 0.20);
+      --tier-b-border: #ffd166;
+      --tier-c: rgba(239, 71, 111, 0.24);
+      --tier-c-border: #ef476f;
+      --tier-d: rgba(120, 122, 125, 0.25);
+      --tier-d-border: #787a7d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { font-size: 1.35rem; color: var(--accent); }
+    
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .controls input, .controls select, .controls button {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .controls button {
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .btn-action {
+      background: var(--accent) !important;
+      color: #111 !important;
+      border: none !important;
+    }
+    .btn-submit {
+      background: #118ab2 !important;
+      color: #fff !important;
+      border: none !important;
+    }
+    .btn-submit:hover {
+      background: #0e7293 !important;
+    }
+    .btn-danger {
+      background: transparent;
+      border-color: rgba(239, 71, 111, 0.4) !important;
+      color: #ef476f;
+    }
+    .btn-danger:hover {
+      background: rgba(239, 71, 111, 0.15) !important;
+    }
+    .btn-loop {
+      background: #232b35;
+      border-color: #3f4b5a !important;
+    }
+    .btn-loop.active {
+      background: #1b4931 !important;
+      border-color: #34d399 !important;
+      color: #a7f3d0 !important;
+    }
+
+    #tier-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+    .tier-row {
+      display: flex;
+      min-height: 48px;
+      border-bottom: 1px solid var(--border);
+    }
+    .tier-row:last-child { border-bottom: none; }
+    .tier-label {
+      width: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      user-select: none;
+      border-right: 1px solid var(--border);
+    }
+    .tier-s { background: var(--tier-s); border-right-color: var(--tier-s-border); }
+    .tier-a { background: var(--tier-a); border-right-color: var(--tier-a-border); }
+    .tier-b { background: var(--tier-b); border-right-color: var(--tier-b-border); }
+    .tier-c { background: var(--tier-c); border-right-color: var(--tier-c-border); }
+    .tier-d { background: var(--tier-d); border-right-color: var(--tier-d-border); }
+    
+    .tier-items {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 8px 12px;
+      align-items: center;
+      min-height: 48px;
+    }
+    .tier-badge {
+      background: #232b35;
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      cursor: grab;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1.2;
+    }
+    .tier-badge:active { cursor: grabbing; opacity: 0.6; }
+
+    #fonts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+    }
+
+    .font-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 5px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s, background-color 0.2s, opacity 0.2s;
+    }
+
+    .font-card.is-ranked-s {
+      border-left-color: var(--tier-s-border);
+      background: linear-gradient(90deg, var(--tier-s) 0%, var(--surface) 38%);
+    }
+    .font-card.is-ranked-a {
+      border-left-color: var(--tier-a-border);
+      background: linear-gradient(90deg, var(--tier-a) 0%, var(--surface) 38%);
+    }
+    .font-card.is-ranked-b {
+      border-left-color: var(--tier-b-border);
+      background: linear-gradient(90deg, var(--tier-b) 0%, var(--surface) 38%);
+    }
+    .font-card.is-ranked-c {
+      border-left-color: var(--tier-c-border);
+      background: linear-gradient(90deg, var(--tier-c) 0%, var(--surface) 38%);
+    }
+    .font-card.is-ranked-d {
+      border-left-color: var(--tier-d-border);
+      background: linear-gradient(90deg, var(--tier-d) 0%, var(--surface) 38%);
+      opacity: 0.82;
+    }
+
+    .font-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 8px;
+    }
+    .font-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .font-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    .status-pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.08);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+    }
+    .status-pill.ranked.tier-s { background: var(--tier-s); border-color: var(--tier-s-border); color: #fff; }
+    .status-pill.ranked.tier-a { background: var(--tier-a); border-color: var(--tier-a-border); color: #fff; }
+    .status-pill.ranked.tier-b { background: var(--tier-b); border-color: var(--tier-b-border); color: #fff; }
+    .status-pill.ranked.tier-c { background: var(--tier-c); border-color: var(--tier-c-border); color: #fff; }
+    .status-pill.ranked.tier-d { background: var(--tier-d); border-color: var(--tier-d-border); color: #fff; }
+
+    .tier-buttons {
+      display: flex;
+      gap: 5px;
+    }
+    .tier-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 5px;
+      border: 1px solid transparent;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.75;
+      transition: all 0.15s ease;
+    }
+    .tier-btn.tier-s { background: var(--tier-s); border-color: rgba(6, 214, 160, 0.4); }
+    .tier-btn.tier-a { background: var(--tier-a); border-color: rgba(17, 138, 178, 0.4); }
+    .tier-btn.tier-b { background: var(--tier-b); border-color: rgba(255, 209, 102, 0.4); }
+    .tier-btn.tier-c { background: var(--tier-c); border-color: rgba(239, 71, 111, 0.4); }
+    .tier-btn.tier-d { background: var(--tier-d); border-color: rgba(120, 122, 125, 0.4); }
+
+    .tier-btn:hover { opacity: 1; transform: scale(1.08); }
+    .tier-btn.selected {
+      opacity: 1;
+      transform: scale(1.15);
+      box-shadow: 0 0 8px rgba(255,255,255,0.4);
+    }
+    .tier-btn.tier-s.selected { border-color: var(--tier-s-border); }
+    .tier-btn.tier-a.selected { border-color: var(--tier-a-border); }
+    .tier-btn.tier-b.selected { border-color: var(--tier-b-border); }
+    .tier-btn.tier-c.selected { border-color: var(--tier-c-border); }
+    .tier-btn.tier-d.selected { border-color: var(--tier-d-border); }
+
+    .preview-stage {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .card-mockup {
+      width: 126px;
+      height: 176px;
+      background: #fdfaf2;
+      border-radius: 6px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.45);
+      position: relative;
+      flex-shrink: 0;
+      user-select: none;
+      overflow: hidden;
+    }
+    .card-mockup.red { color: #b81d24; fill: #b81d24; }
+    .card-mockup.black { color: #151515; fill: #151515; }
+
+    .corner {
+      position: absolute;
+      width: auto;
+      min-width: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      line-height: 1;
+      text-align: center;
+      pointer-events: none;
+    }
+    .corner-top {
+      top: 12px;
+      left: 8px;
+    }
+    .corner-bottom {
+      bottom: 12px;
+      right: 8px;
+      transform: rotate(180deg);
+    }
+
+    .corner-val {
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.5px;
+      white-space: nowrap;
+    }
+    .corner-suit {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .center-art {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.92;
+      pointer-events: none;
+    }
+
+    .ui-mockup {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.85rem;
+      background: rgba(0,0,0,0.25);
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    .ui-mockup-title {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 0.95rem;
+    }
+    .char-strip {
+      font-size: 0.9rem;
+      word-break: break-all;
+      letter-spacing: 1px;
+      opacity: 0.85;
+      padding-top: 4px;
+      border-top: 1px dashed rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🃏 Naipes Font Tier List</h1>
+    <div class="controls">
+      <input type="text" id="custom-val" value="A" maxlength="3" title="Custom card index" style="width: 48px; text-align: center;">
+      <select id="suit-picker">
+        <option value="spade">♠️</option>
+        <option value="heart">♥️</option>
+        <option value="diamond">♦️</option>
+        <option value="club">♣️</option>
+      </select>
+      <button id="btn-loop" class="btn-loop" onclick="toggleLoop()">▶️</button>
+      <select id="sort-picker" onchange="renderGrid()">
+        <option value="tier" selected>😍 ‎ ➔ ‎ 💩</option>
+        <option value="tier-rev">💩 ‎ ➔ ‎ 😍</option>
+        <option value="alpha">A ‎ ➔ ‎ Z</option>
+        <option value="alpha-rev">Z ‎ ➔ ‎ A</option>
+      </select>
+      <select id="status-filter" onchange="renderGrid()">
+        <option value="all"> ‎ - - - ‎ </option>
+        <option value="pending"> ‎ ❓ ‎ </option>
+        <option value="ranked"> ‎ ✅ ‎ </option>
+      </select>
+      <input type="text" id="search-box" placeholder="Search..." style="width: 110px;">
+      <button class="btn-action" onclick="exportMarkdown()" title="Copy as Markdown">Copy</button>
+      <button class="btn-submit" onclick="submitToGoogleSheet()" title="Submit to form">Submit</button>
+      <button class="btn-danger" onclick="resetLocalRanking()" title="Reset tier list">🗑️</button>
+    </div>
+  </header>
+
+  <div id="tier-container">
+    <div class="tier-row" data-tier="😍">
+      <div class="tier-label tier-s">😍</div>
+      <div class="tier-items" ondragover="allowDrop(event)" ondrop="handleDrop(event, '😍')"></div>
+    </div>
+    <div class="tier-row" data-tier="👍">
+      <div class="tier-label tier-a">👍</div>
+      <div class="tier-items" ondragover="allowDrop(event)" ondrop="handleDrop(event, '👍')"></div>
+    </div>
+    <div class="tier-row" data-tier="🧐">
+      <div class="tier-label tier-b">🧐</div>
+      <div class="tier-items" ondragover="allowDrop(event)" ondrop="handleDrop(event, '🧐')"></div>
+    </div>
+    <div class="tier-row" data-tier="👎">
+      <div class="tier-label tier-c">👎</div>
+      <div class="tier-items" ondragover="allowDrop(event)" ondrop="handleDrop(event, '👎')"></div>
+    </div>
+    <div class="tier-row" data-tier="💩">
+      <div class="tier-label tier-d">💩</div>
+      <div class="tier-items" ondragover="allowDrop(event)" ondrop="handleDrop(event, '💩')"></div>
+    </div>
+  </div>
+
+  <main id="fonts-grid"></main>
+
+  <script>
+    const GOOGLE_FORM_ID = "1FAIpQLSdRVKg2UW6vGV_eWqzUI5sDU3kBpd-NdteHu98PUJmbbvmOhw";
+    const ENTRY_USER_ID = "52964914";
+    const ENTRY_RANKING_ID = "88442973";
+
+    const STORAGE_KEY = "naipes_font_tier_ranking_v1";
+
+    const fonts = [
+      "Aleo", "Arbutus Slab", "Besley", "Domine", "Gentium Book Plus",
+      "Gentium Plus", "Gowun Batang", "Grandiflora One", "Jersey 15",
+      "Judson", "Karma", "New Tegomin", "Noticia Text", "Oldenburg",
+      "Pangolin", "Pridi", "Roboto Slab", "Solway", "Spectral",
+      "Uchen", "Unkempt", "Vesper Libre"
+    ];
+
+    const TIER_META = {
+      "😍": { key: "s", emoji: "😍", priority: 1 },
+      "👍": { key: "a", emoji: "👍", priority: 2 },
+      "🧐": { key: "b", emoji: "🧐", priority: 3 },
+      "👎": { key: "c", emoji: "👎", priority: 4 },
+      "💩": { key: "d", emoji: "💩", priority: 5 }
+    };
+
+    const SUIT_SVGS = {
+      spade: `<svg viewBox="0 0 16 16" width="100%" height="100%" style="shape-rendering: crispEdges;" fill="currentColor">
+        <path d="M7,1 h2 v1 h-2 Z M6,2 h4 v1 h-4 Z M5,3 h6 v1 h-6 Z M4,4 h8 v1 h-8 Z M3,5 h10 v1 h-10 Z M2,6 h12 v2 h-12 Z M1,8 h14 v2 h-14 Z M2,10 h4 v1 h-4 Z M10,10 h4 v1 h-4 Z M3,11 h2 v1 h-2 Z M7,10 h2 v2 h-2 Z M11,11 h2 v1 h-2 Z M6,12 h4 v1 h-4 Z M5,13 h6 v1 h-6 Z M4,14 h8 v1 h-8 Z"/>
+      </svg>`,
+      heart: `<svg viewBox="0 0 16 16" width="100%" height="100%" style="shape-rendering: crispEdges;" fill="currentColor">
+        <path d="M2,2 h4 v1 h-4 Z M10,2 h4 v1 h-4 Z M1,3 h6 v1 h-6 Z M9,3 h6 v1 h-6 Z M0,4 h16 v3 h-16 Z M1,7 h14 v1 h-14 Z M2,8 h12 v1 h-12 Z M3,9 h10 v1 h-10 Z M4,10 h8 v1 h-8 Z M5,11 h6 v1 h-6 Z M6,12 h4 v1 h-4 Z M7,13 h2 v1 h-2 Z"/>
+      </svg>`,
+      diamond: `<svg viewBox="0 0 16 16" width="100%" height="100%" style="shape-rendering: crispEdges;" fill="currentColor">
+        <path d="M7,1 h2 v1 h-2 Z M6,2 h4 v1 h-4 Z M5,3 h6 v1 h-6 Z M4,4 h8 v1 h-8 Z M3,5 h10 v1 h-10 Z M2,6 h12 v1 h-12 Z M1,7 h14 v2 h-14 Z M2,9 h12 v1 h-12 Z M3,10 h10 v1 h-10 Z M4,11 h8 v1 h-8 Z M5,12 h6 v1 h-6 Z M6,13 h4 v1 h-4 Z M7,14 h2 v1 h-2 Z"/>
+      </svg>`,
+      club: `<svg viewBox="0 0 16 16" width="100%" height="100%" style="shape-rendering: crispEdges;" fill="currentColor">
+        <path d="M6,1 h4 v1 h-4 Z M5,2 h6 v2 h-6 Z M6,4 h4 v1 h-4 Z M2,5 h4 v1 h-4 Z M10,5 h4 v1 h-4 Z M1,6 h14 v2 h-14 Z M1,8 h6 v1 h-6 Z M9,8 h6 v1 h-6 Z M2,9 h4 v1 h-4 Z M7,8 h2 v2 h-2 Z M10,9 h4 v1 h-4 Z M6,10 h4 v1 h-4 Z M6,11 h4 v1 h-4 Z M5,12 h6 v1 h-6 Z M4,13 h8 v1 h-8 Z"/>
+      </svg>`
+    };
+
+    const cycleSequence = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "A", "J", "Q", "K"];
+    let cycleIndex = 0;
+    let loopInterval = null;
+    let ranking = {};
+
+    const grid = document.getElementById("fonts-grid");
+    const valInput = document.getElementById("custom-val");
+    const suitPicker = document.getElementById("suit-picker");
+    const searchBox = document.getElementById("search-box");
+    const sortPicker = document.getElementById("sort-picker");
+    const statusFilter = document.getElementById("status-filter");
+    const btnLoop = document.getElementById("btn-loop");
+
+    function loadStoredRanking() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          ranking = JSON.parse(stored);
+        }
+      } catch (err) {
+        console.warn("Storage load failed:", err);
+      }
+    }
+
+    function saveRankingToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(ranking));
+      } catch (err) {
+        console.warn("Storage save failed:", err);
+      }
+    }
+
+    function resetLocalRanking() {
+      if (Object.keys(ranking).length === 0) return;
+      if (confirm("Do you really want to reset your tier list?")) {
+        ranking = {};
+        saveRankingToStorage();
+        updateTierDOM();
+        renderGrid();
+      }
+    }
+
+    function getCurrentValue() {
+      if (loopInterval) {
+        return cycleSequence[cycleIndex];
+      }
+      return valInput.value.trim() || "A";
+    }
+
+    function renderGrid() {
+      grid.innerHTML = "";
+      const val = getCurrentValue();
+      const suitKey = suitPicker.value;
+      const isRed = (suitKey === "heart" || suitKey === "diamond");
+      const suitSvg = SUIT_SVGS[suitKey] || SUIT_SVGS.spade;
+      const filter = searchBox.value.toLowerCase();
+      const statusMode = statusFilter.value;
+      const sortMode = sortPicker.value;
+
+      const sortedFonts = [...fonts].sort((a, b) => {
+        if (sortMode === "tier") {
+          const priorityA = TIER_META[ranking[a]] ? TIER_META[ranking[a]].priority : 99;
+          const priorityB = TIER_META[ranking[b]] ? TIER_META[ranking[b]].priority : 99;
+          if (priorityA !== priorityB) {
+            return priorityA - priorityB;
+          }
+          return a.localeCompare(b);
+        } else if (sortMode === "tier-rev") {
+          const priorityA = TIER_META[ranking[a]] ? TIER_META[ranking[a]].priority : 99;
+          const priorityB = TIER_META[ranking[b]] ? TIER_META[ranking[b]].priority : 99;
+          if (priorityA !== priorityB) {
+            return priorityB - priorityA;
+          }
+          return a.localeCompare(b);
+        } else if (sortMode === "alpha-rev") {
+          return b.localeCompare(a);
+        } else {
+          return a.localeCompare(b);
+        }
+      });
+
+      sortedFonts.forEach(f => {
+        if (!f.toLowerCase().includes(filter)) return;
+
+        const currentTier = ranking[f];
+        if (statusMode === "pending" && currentTier) return;
+        if (statusMode === "ranked" && !currentTier) return;
+
+        const card = document.createElement("div");
+        const tierMeta = TIER_META[currentTier];
+        const cardClass = tierMeta ? `is-ranked-${tierMeta.key}` : '';
+        card.className = `font-card ${cardClass}`;
+        card.id = `card-${f.replace(/\s+/g, '-')}`;
+
+        let statusHtml = '<span class="status-pill">❔</span>';
+        if (tierMeta) {
+          statusHtml = `<span class="status-pill ranked tier-${tierMeta.key}">${currentTier}</span>`;
+        }
+
+        card.innerHTML = `
+          <div class="font-card-header">
+            <div class="font-info">
+              <span class="font-title" style="font-family: '${f}', serif;">${f}</span>
+              ${statusHtml}
+            </div>
+            <div class="tier-buttons">
+              <button class="tier-btn tier-s ${currentTier === '😍' ? 'selected' : ''}" onclick="setTier('${f}', '😍')">😍</button>
+              <button class="tier-btn tier-a ${currentTier === '👍' ? 'selected' : ''}" onclick="setTier('${f}', '👍')">👍</button>
+              <button class="tier-btn tier-b ${currentTier === '🧐' ? 'selected' : ''}" onclick="setTier('${f}', '🧐')">🧐</button>
+              <button class="tier-btn tier-c ${currentTier === '👎' ? 'selected' : ''}" onclick="setTier('${f}', '👎')">👎</button>
+              <button class="tier-btn tier-d ${currentTier === '💩' ? 'selected' : ''}" onclick="setTier('${f}', '💩')">💩</button>
+            </div>
+          </div>
+          <div class="preview-stage">
+            <div class="card-mockup ${isRed ? 'red' : 'black'}">
+              <div class="corner corner-top">
+                <span class="corner-val" style="font-family: '${f}', serif;">${val}</span>
+                <div class="corner-suit">${suitSvg}</div>
+              </div>
+              <div class="center-art">${suitSvg}</div>
+              <div class="corner corner-bottom">
+                <span class="corner-val" style="font-family: '${f}', serif;">${val}</span>
+                <div class="corner-suit">${suitSvg}</div>
+              </div>
+            </div>
+
+            <div class="ui-mockup" style="font-family: '${f}', serif;">
+              <span class="ui-mockup-title">Ronda Ciega - La Podría</span>
+              <p>Vida = Tréboles</p>
+              <p>‎ ➔¿ú?¡á!(:)[-]'<&>*_+""x$€%#@bjókfqzñ</p>
+              <div class="char-strip">A J Q K · 1 2 3 4 5 6 7 8 9 10 11 12</div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function updateCardValuesOnly(val) {
+      document.querySelectorAll(".corner-val").forEach(el => {
+        el.textContent = val;
+      });
+    }
+
+    function toggleLoop() {
+      if (loopInterval) {
+        clearInterval(loopInterval);
+        loopInterval = null;
+        btnLoop.classList.remove("active");
+        btnLoop.textContent = "▶️";
+        updateCardValuesOnly(valInput.value || "A");
+      } else {
+        btnLoop.classList.add("active");
+        btnLoop.textContent = "⏸️";
+        cycleIndex = 0;
+        updateCardValuesOnly(cycleSequence[cycleIndex]);
+        valInput.value = cycleSequence[cycleIndex];
+        
+        loopInterval = setInterval(() => {
+          cycleIndex = (cycleIndex + 1) % cycleSequence.length;
+          const nextVal = cycleSequence[cycleIndex];
+          updateCardValuesOnly(nextVal);
+          valInput.value = nextVal;
+        }, 1200);
+      }
+    }
+
+    function setTier(fontName, tier) {
+      if (ranking[fontName] === tier) {
+        delete ranking[fontName];
+      } else {
+        ranking[fontName] = tier;
+      }
+      saveRankingToStorage();
+      updateTierDOM();
+      renderGrid();
+    }
+
+    function updateTierDOM() {
+      document.querySelectorAll(".tier-items").forEach(el => el.innerHTML = "");
+      for (const [font, tier] of Object.entries(ranking)) {
+        const row = document.querySelector(`.tier-row[data-tier='${tier}'] .tier-items`);
+        if (row) {
+          const badge = document.createElement("div");
+          badge.className = "tier-badge";
+          badge.draggable = true;
+          badge.innerText = font;
+          badge.style.fontFamily = `'${font}', serif`;
+          
+          const meta = TIER_META[tier];
+          if (meta) {
+            badge.style.borderLeft = `3px solid var(--tier-${meta.key}-border)`;
+          }
+          badge.ondragstart = (e) => e.dataTransfer.setData("text/plain", font);
+          row.appendChild(badge);
+        }
+      }
+    }
+
+    function allowDrop(e) { e.preventDefault(); }
+    function handleDrop(e, targetTier) {
+      e.preventDefault();
+      const font = e.dataTransfer.getData("text/plain");
+      if (font) {
+        ranking[font] = targetTier;
+        saveRankingToStorage();
+        updateTierDOM();
+        renderGrid();
+      }
+    }
+
+    async function copyToClipboardFallback(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (err) {
+          console.warn("Clipboard API failed, using execCommand...", err);
+        }
+      }
+
+      try {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        textArea.setAttribute("readonly", "");
+        document.body.appendChild(textArea);
+        textArea.select();
+        textArea.setSelectionRange(0, 99999);
+        const success = document.execCommand("copy");
+        document.body.removeChild(textArea);
+        if (success) return true;
+      } catch (err) {
+        console.error("execCommand error:", err);
+      }
+
+      return false;
+    }
+
+    async function exportMarkdown() {
+      if (Object.keys(ranking).length === 0) {
+        alert("Please rank at least one font first.");
+        return;
+      }
+      let md = "### Naipes Font Tier List\n\n| Tier | Font |\n|---|---|\n";
+      ["😍", "👍", "🧐", "👎", "💩"].forEach(t => {
+        const list = Object.keys(ranking).filter(f => ranking[f] === t);
+        md += `| **${t}** | ${list.join(", ") || "-"} |\n`;
+      });
+
+      const copied = await copyToClipboardFallback(md);
+      if (copied) {
+        alert("Ranking copied to clipboard!");
+      } else {
+        window.prompt("Copy your ranking manually:", md);
+      }
+    }
+
+    async function submitToGoogleSheet() {
+      if (Object.keys(ranking).length === 0) {
+        alert("Please rank at least one font before submitting.");
+        return;
+      }
+
+      const userName = prompt("Please enter a nickname to submit your tier list:", "");
+      if (!userName || !userName.trim()) return;
+
+      const formattedData = Object.entries(ranking)
+        .sort(([fontA, tierA], [fontB, tierB]) => {
+          const priorityA = TIER_META[tierA] ? TIER_META[tierA].priority : 99;
+          const priorityB = TIER_META[tierB] ? TIER_META[tierB].priority : 99;
+          if (priorityA !== priorityB) {
+            return priorityA - priorityB;
+          }
+          return fontA.localeCompare(fontB);
+        })
+        .map(([font, tier]) => `${tier} ${font}`)
+        .join("\n");
+
+      const formUrl = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`;
+      const formData = new FormData();
+      formData.append(`entry.${ENTRY_USER_ID}`, userName.trim());
+      formData.append(`entry.${ENTRY_RANKING_ID}`, formattedData);
+
+      try {
+        await fetch(formUrl, {
+          method: "POST",
+          mode: "no-cors",
+          body: formData
+        });
+        alert(`Thank you, ${userName}! Your tier list has been submitted successfully.`);
+      } catch (err) {
+        alert("Network error while submitting. Please try again.");
+      }
+    }
+
+    valInput.addEventListener("input", () => {
+      if (loopInterval) toggleLoop();
+      updateCardValuesOnly(valInput.value || "A");
+    });
+
+    suitPicker.addEventListener("change", renderGrid);
+    searchBox.addEventListener("input", renderGrid);
+
+    loadStoredRanking();
+    updateTierDOM();
+    renderGrid();
+  </script>
+</body>
+</html>
